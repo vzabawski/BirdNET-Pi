@@ -157,12 +157,9 @@ version=$($HOME/BirdNET-Pi/birdnet/bin/python3 -c "import suntime; print(suntime
 version=$($HOME/BirdNET-Pi/birdnet/bin/python3 -c "import pyarrow; print(pyarrow.__version__)")
 [[ $version != "20.0.0" ]] && sudo_with_user $HOME/BirdNET-Pi/birdnet/bin/pip3 install pyarrow==20.0.0
 
-PY_VERSION=$($HOME/BirdNET-Pi/birdnet/bin/python3 -c "import sys; print(f'{sys.version_info[0]}{sys.version_info[1]}')")
-tf_version=$($HOME/BirdNET-Pi/birdnet/bin/python3 -c "import tflite_runtime; print(tflite_runtime.__version__)")
-if [ "$PY_VERSION" == 39 ] && [ "$tf_version" != "2.11.0" ] || [ "$PY_VERSION" != 39 ] && [ "$tf_version" != "2.17.1" ]; then
-  get_tf_whl
-  # include our numpy dependants so pip can figure out which numpy version to install
-  sudo_with_user $HOME/BirdNET-Pi/birdnet/bin/pip3 install $HOME/BirdNET-Pi/$WHL pandas librosa matplotlib
+ai_edge_litert_version=$($HOME/BirdNET-Pi/birdnet/bin/python3 -c "import ai_edge_litert; print(ai_edge_litert.__version__)" 2>/dev/null || echo "")
+if [ "$ai_edge_litert_version" != "2.1.4" ]; then
+  sudo_with_user $HOME/BirdNET-Pi/birdnet/bin/pip3 install ai-edge-litert==2.1.4 pandas librosa matplotlib
 fi
 
 ensure_python_package inotify inotify
